@@ -1,4 +1,4 @@
-
+fds
 let playerPoints = 0;
 let computerPoints = 0;
 
