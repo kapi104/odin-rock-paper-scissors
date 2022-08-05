@@ -1,4 +1,4 @@
-fds
+
 let playerPoints = 0;
 let computerPoints = 0;
 
@@ -10,37 +10,44 @@ function getComputerChoice() {
 }
 
 function playRound(playerChoice, computerChoice) {
-    
-        if (playerChoice == computerChoice) {
-            return `it's a draw. You have ${playerPoints} and computer have ${computerPoints}`;
-        } else if (playerChoice === `paper` && computerChoice === `scissors` ||
-                    playerChoice === `scissors` && computerChoice === `rock` ||
-                    playerChoice === `rock` && computerChoice === `paper`) {
-            computerPoints = computerPoints + 1;
-            return `You lose ${computerChoice} beats ${playerChoice}. You have ${playerPoints} and computer have ${computerPoints}`;
-        } else {
-            playerPoints = playerPoints + 1;
-            return `You won ${playerChoice} beats ${computerChoice}. You have ${playerPoints} and computer have ${computerPoints}`;
-        }
-}
 
-function compare() {
-    if (playerPoints == computerPoints) return `it's a draw. You both had ${playerPoints}`;
-    else if (playerPoints > computerPoints) return `You won with ${playerPoints} points. computer had only ${computerPoints}`;
-    else return `You lose with ${playerPoints} points. computer had ${computerPoints}`; 
-}
-
-function play() {
-    console.clear;
-    for (i=0; i<=5; i++) {
-        if (i < 5) {
-            let computerSelection = getComputerChoice();
-            let playerSelection = prompt(`rock, paper or scissors`).toLowerCase();
-            console.log(playRound(playerSelection, computerSelection))
-        } else {
-            console.log(compare())
-        }
+    if (playerChoice == computerChoice) {
+        return `it's a draw.`;
+    } else if (playerChoice === `paper` && computerChoice === `scissors` ||
+        playerChoice === `scissors` && computerChoice === `rock` ||
+        playerChoice === `rock` && computerChoice === `paper`) {
+        computerPoints += 1;
+        if (playerPoints === 5 || computerPoints === 5) return compare();
+        else return `You lose.`;
+    } else {
+        playerPoints += 1;
+        if (playerPoints === 5 || computerPoints === 5) return compare();
+        else return `You won.`;
     }
 }
 
+function compare() {
+    if (playerPoints > computerPoints) {
+        let result = `You won with ${playerPoints} points. computer had only ${computerPoints}`
+        playerPoints = 0;
+        computerPoints = 0;
+        return result;
+    }
+    else {
+        let result = `You lose with ${playerPoints} points. computer had ${computerPoints}`
+        playerPoints = 0;
+        computerPoints = 0;
+        return result;
+    }
+}
 
+function play() {
+    let playerSelection = this.value;
+    let computerSelection = getComputerChoice();
+    let div = document.querySelector('.result');
+    div.innerHTML = playRound(playerSelection, computerSelection) + `<br>Current score is:<br>You: ${playerPoints}<br>Computer: ${computerPoints}`
+}
+
+let btn = document.querySelectorAll('button');
+btn.forEach(but => but.addEventListener('click', play)
+)
